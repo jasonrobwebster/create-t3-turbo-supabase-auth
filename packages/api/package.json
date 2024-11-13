@@ -23,6 +23,7 @@
     "@acme/db": "workspace:*",
     "@acme/validators": "workspace:*",
     "@trpc/server": "catalog:",
+    "postgres": "~3.4.4",
     "superjson": "2.2.1",
     "zod": "catalog:"
   },

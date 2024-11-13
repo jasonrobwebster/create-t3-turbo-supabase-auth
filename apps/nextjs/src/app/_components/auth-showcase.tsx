@@ -1,20 +1,44 @@
-import { auth, signIn, signOut } from "@acme/auth";
+import { getUser, signIn, signOut, signUp } from "@acme/auth";
 import { Button } from "@acme/ui/button";
+import { Input } from "@acme/ui/input";
 
 export async function AuthShowcase() {
-  const session = await auth();
+  const user = await getUser();
 
-  if (!session) {
+  if (!user) {
     return (
-      <form>
+      <form className="flex flex-col space-y-2">
+        <Input name="email" type="email" placeholder="email" />
+        <Input name="password" type="password" placeholder="password" />
         <Button
           size="lg"
-          formAction={async () => {
+          formAction={async (formData) => {
             "use server";
-            await signIn("discord");
+            console.log("logging in");
+            const email = formData.get("email") as string;
+            const password = formData.get("password") as string;
+            try {
+              console.log("signing in");
+              const { data, error } = await signUp({
+                email,
+                password,
+              });
+              console.log(data, error);
+              console.log("signed in");
+            } catch (error) {
+              console.error("Error signing in:", error);
+              try {
+                await signUp({
+                  email,
+                  password,
+                });
+              } catch (error) {
+                console.error("Error signing up:", error);
+              }
+            }
           }}
         >
-          Sign in with Discord
+          Sign in
         </Button>
       </form>
     );
@@ -23,7 +47,7 @@ export async function AuthShowcase() {
   return (
     <div className="flex flex-col items-center justify-center gap-4">
       <p className="text-center text-2xl">
-        <span>Logged in as {session.user.name}</span>
+        <span>Logged in as {user.id}</span>
       </p>
 
       <form>

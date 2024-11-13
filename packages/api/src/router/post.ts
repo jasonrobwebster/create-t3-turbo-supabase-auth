@@ -7,12 +7,20 @@ import { CreatePostSchema, Post } from "@acme/db/schema";
 import { protectedProcedure, publicProcedure } from "../trpc";
 
 export const postRouter = {
-  all: publicProcedure.query(({ ctx }) => {
+  all: publicProcedure.query(async ({ ctx }) => {
     // return ctx.db.select().from(schema.post).orderBy(desc(schema.post.id));
-    return ctx.db.query.Post.findMany({
-      orderBy: desc(Post.id),
-      limit: 10,
-    });
+    console.log("getting posts");
+    try {
+      const posts = await ctx.db.query.Post.findMany({
+        orderBy: desc(Post.id),
+        limit: 10,
+      });
+      console.log("posts", posts);
+      return posts;
+    } catch (error) {
+      console.error("posts error", error);
+      return [];
+    }
   }),
 
   byId: publicProcedure
@@ -31,10 +39,10 @@ export const postRouter = {
   create: protectedProcedure
     .input(CreatePostSchema)
     .mutation(({ ctx, input }) => {
-      return ctx.db.insert(Post).values(input);
+      return ctx.db.insert(Post).values(input).returning();
     }),
 
   delete: protectedProcedure.input(z.string()).mutation(({ ctx, input }) => {
-    return ctx.db.delete(Post).where(eq(Post.id, input));
+    return ctx.db.delete(Post).where(eq(Post.id, input)).returning();
   }),
 } satisfies TRPCRouterRecord;

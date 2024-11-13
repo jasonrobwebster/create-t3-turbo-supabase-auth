@@ -1,6 +1,7 @@
 import { cache } from "react";
 
 import {
+  supabaseAuth as defaultSupabaseAuth,
   getUser as getUserDefault,
   signIn,
   signInWithOAuth,
@@ -11,3 +12,4 @@ import {
 
 export { signIn, signInWithOAuth, signInWithPassword, signOut, signUp };
 export const getUser = cache(getUserDefault);
+export const supabaseAuth = cache(defaultSupabaseAuth);
