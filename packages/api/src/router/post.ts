@@ -9,13 +9,11 @@ import { protectedProcedure, publicProcedure } from "../trpc";
 export const postRouter = {
   all: publicProcedure.query(async ({ ctx }) => {
     // return ctx.db.select().from(schema.post).orderBy(desc(schema.post.id));
-    console.log("getting posts");
     try {
       const posts = await ctx.db.query.Post.findMany({
         orderBy: desc(Post.id),
         limit: 10,
       });
-      console.log("posts", posts);
       return posts;
     } catch (error) {
       console.error("posts error", error);

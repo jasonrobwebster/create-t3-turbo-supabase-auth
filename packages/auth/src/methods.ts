@@ -8,31 +8,50 @@ import { createNextServerClient } from "@acme/supabase/next";
 
 // sign in methods
 // not extensive, feel free to add more here
-export const signIn = (credentials: SignInWithPasswordCredentials) => {
+export const signIn = async (credentials: SignInWithPasswordCredentials) => {
   const supabase = createNextServerClient();
-  return supabase.auth.signInWithPassword(credentials);
+  const { data, error } = await supabase.auth.signInWithPassword(credentials);
+  if (error) {
+    throw error;
+  }
+  return data.user;
 };
-export const signInWithPassword = (
+export const signInWithPassword = async (
   credentials: SignInWithPasswordCredentials,
 ) => {
   const supabase = createNextServerClient();
-  return supabase.auth.signInWithPassword(credentials);
+  const { data, error } = await supabase.auth.signInWithPassword(credentials);
+  if (error) {
+    throw error;
+  }
+  return data.user;
 };
-export const signInWithOAuth = (credentials: SignInWithOAuthCredentials) => {
+export const signInWithOAuth = async (
+  credentials: SignInWithOAuthCredentials,
+) => {
   const supabase = createNextServerClient();
-  return supabase.auth.signInWithOAuth(credentials);
+  const { data } = await supabase.auth.signInWithOAuth(credentials);
+  return data;
 };
 
 // sign out methods
-export const signOut = () => {
+export const signOut = async () => {
   const supabase = createNextServerClient();
-  return supabase.auth.signOut();
+  const { error } = await supabase.auth.signOut();
+  if (error) {
+    throw error;
+  }
+  return;
 };
 
 // sign up method
-export const signUp = (credentials: SignUpWithPasswordCredentials) => {
+export const signUp = async (credentials: SignUpWithPasswordCredentials) => {
   const supabase = createNextServerClient();
-  return supabase.auth.signUp(credentials);
+  const { data, error } = await supabase.auth.signUp(credentials);
+  if (error) {
+    throw error;
+  }
+  return data.user;
 };
 
 // get user method
@@ -57,5 +76,8 @@ export const supabaseAuth =
     const authToken = req.headers.get("Authorization");
     const user = await getUser(authToken ?? undefined);
 
-    return fn({ ...req, user });
+    const newReq = req as Request & { user: User | null };
+    newReq.user = user;
+
+    return fn(newReq);
   };

@@ -36,7 +36,7 @@ export function CreatePostForm() {
       toast.error(
         err.data?.code === "UNAUTHORIZED"
           ? "You must be logged in to post"
-          : "Failed to create post",
+          : "Failed to create post. " + err.message,
       );
     },
   });

@@ -9,18 +9,28 @@ export const runtime = "edge";
  * Configure basic CORS headers
  * You should extend this to match your needs
  */
-const setCorsHeaders = (res: Response) => {
-  res.headers.set("Access-Control-Allow-Origin", "*");
-  res.headers.set("Access-Control-Request-Method", "*");
-  res.headers.set("Access-Control-Allow-Methods", "OPTIONS, GET, POST");
-  res.headers.set("Access-Control-Allow-Headers", "*");
+const setCorsHeaders = (req: Request, res: Response) => {
+  const allowedOrigins = ["http://localhost:3000"];
+
+  const origin = req.headers.get("Origin");
+
+  if (origin && allowedOrigins.includes(origin)) {
+    res.headers.set("Access-Control-Allow-Origin", origin);
+    res.headers.set("Access-Control-Request-Method", "*");
+    res.headers.set("Access-Control-Allow-Methods", "OPTIONS, GET, POST");
+    res.headers.set(
+      "Access-Control-Allow-Headers",
+      "Content-Type, Authorization, X-Requested-With, x-trpc-source, trpc-batch-mode",
+    );
+    res.headers.set("Access-Control-Allow-Credentials", "true");
+  }
 };
 
-export const OPTIONS = () => {
+export const OPTIONS = (req: Request) => {
   const response = new Response(null, {
     status: 204,
   });
-  setCorsHeaders(response);
+  setCorsHeaders(req, response);
   return response;
 };
 
@@ -39,7 +49,7 @@ const handler = supabaseAuth(async (req) => {
     },
   });
 
-  setCorsHeaders(response);
+  setCorsHeaders(req, response);
   return response;
 });
 

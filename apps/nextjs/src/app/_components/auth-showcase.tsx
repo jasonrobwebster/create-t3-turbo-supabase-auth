@@ -14,17 +14,13 @@ export async function AuthShowcase() {
           size="lg"
           formAction={async (formData) => {
             "use server";
-            console.log("logging in");
             const email = formData.get("email") as string;
             const password = formData.get("password") as string;
             try {
-              console.log("signing in");
-              const { data, error } = await signUp({
+              await signIn({
                 email,
                 password,
               });
-              console.log(data, error);
-              console.log("signed in");
             } catch (error) {
               console.error("Error signing in:", error);
               try {
