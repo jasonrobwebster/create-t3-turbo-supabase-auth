@@ -1,7 +1,7 @@
 import { fetchRequestHandler } from "@trpc/server/adapters/fetch";
 
 import { appRouter, createTRPCContext } from "@acme/api";
-import { auth } from "@acme/auth";
+import { supabaseAuth } from "@acme/auth";
 
 export const runtime = "edge";
 
@@ -24,14 +24,14 @@ export const OPTIONS = () => {
   return response;
 };
 
-const handler = auth(async (req) => {
+const handler = supabaseAuth(async (req) => {
   const response = await fetchRequestHandler({
     endpoint: "/api/trpc",
     router: appRouter,
     req,
     createContext: () =>
       createTRPCContext({
-        session: req.auth,
+        user: req.user,
         headers: req.headers,
       }),
     onError({ error, path }) {
