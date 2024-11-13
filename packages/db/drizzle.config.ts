@@ -11,4 +11,5 @@ export default {
   out: "../../supabase/migrations",
   dialect: "postgresql",
   dbCredentials: { url: nonPoolingUrl },
+  casing: "snake_case",
 } satisfies Config;
