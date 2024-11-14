@@ -11,3 +11,8 @@ CREATE TABLE IF NOT EXISTS "user" (
 	"name" text,
 	"image" text
 );
+--> statement-breakpoint
+ALTER TABLE
+	"user"
+ADD
+	CONSTRAINT fk_user_id FOREIGN KEY (id) REFERENCES auth.users (id) ON DELETE CASCADE;
