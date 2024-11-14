@@ -25,8 +25,7 @@ export async function confirm(request: NextRequest) {
     if (!error) {
       return NextResponse.redirect(redirectTo);
     }
-
-    console.error(error);
+    console.error("Error in auth confirm:", error);
   }
 
   // return the user to an error page with some instructions

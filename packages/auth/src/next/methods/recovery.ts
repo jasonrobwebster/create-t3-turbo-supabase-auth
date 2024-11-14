@@ -21,6 +21,7 @@ export async function recovery(request: Request) {
     if (!error) {
       return NextResponse.redirect(redirectTo);
     }
+    console.error("Error in auth recovery:", error);
   }
 
   // return the user to an error page with instructions

@@ -21,6 +21,7 @@ export async function oauthConfirm(request: Request) {
     if (!error) {
       return NextResponse.redirect(redirectTo);
     }
+    console.error("Error in oauth confirm:", error);
   }
 
   // return the user to an error page with instructions
