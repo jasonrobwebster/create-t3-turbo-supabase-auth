@@ -1,6 +1,6 @@
 # create-t3-turbo-supabase-auth
 
-Example of [create-t3-turbo](https://github.com/t3-oss/create-t3-turbo) utilizing supabase authentication in place of NextAuth.
+Example of [create-t3-turbo](https://github.com/t3-oss/create-t3-turbo) utilizing supabase authentication in place of NextAuth. Detailed changes can be found in [this pull request](https://github.com/jasonrobwebster/create-t3-turbo-supabase-auth/pull/1).
 
 > [!WARNING]
 >
