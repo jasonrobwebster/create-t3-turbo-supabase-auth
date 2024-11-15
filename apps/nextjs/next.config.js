@@ -20,15 +20,6 @@ const config = {
   /** We already do linting and typechecking as separate tasks in CI */
   eslint: { ignoreDuringBuilds: true },
   typescript: { ignoreBuildErrors: true },
-  // webpack: (config, { webpack }) => {
-  //   config.plugins.push(
-  //     new webpack.IgnorePlugin({
-  //       resourceRegExp: /^pg-native$|^cloudflare:sockets$/,
-  //     }),
-  //   );
-  //   config;
-  //   return config;
-  // },
 };
 
 export default config;
