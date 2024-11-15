@@ -3,12 +3,12 @@ CREATE
 OR REPLACE FUNCTION public.sync_users() RETURNS TRIGGER AS $$ 
 BEGIN
 INSERT INTO
-    "public"."user" (id, name, image)
+    "public"."users" (id, name, image)
 VALUES
     (
         NEW.id,
         NEW.raw_user_meta_data ->> 'first_name',
-        NEW.raw_user_meta_data->>'avatar_url'
+        NEW.raw_user_meta_data ->> 'avatar_url'
     );
 
 RETURN NEW;

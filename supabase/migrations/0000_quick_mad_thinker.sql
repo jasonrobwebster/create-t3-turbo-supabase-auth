@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS "post" (
+CREATE TABLE IF NOT EXISTS "posts" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"title" varchar(256) NOT NULL,
 	"content" text NOT NULL,
@@ -6,13 +6,13 @@ CREATE TABLE IF NOT EXISTS "post" (
 	"updated_at" timestamp with time zone
 );
 --> statement-breakpoint
-CREATE TABLE IF NOT EXISTS "user" (
+CREATE TABLE IF NOT EXISTS "users" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"name" text,
 	"image" text
 );
 --> statement-breakpoint
 ALTER TABLE
-	"user"
+	"users"
 ADD
 	CONSTRAINT fk_user_id FOREIGN KEY (id) REFERENCES auth.users (id) ON DELETE CASCADE;
