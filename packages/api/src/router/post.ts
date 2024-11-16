@@ -16,7 +16,6 @@ export const postRouter = {
       });
       return posts;
     } catch (error) {
-      console.error("posts error", error);
       return [];
     }
   }),
