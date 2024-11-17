@@ -7,17 +7,12 @@ import { CreatePostSchema, Post } from "@acme/db/schema";
 import { protectedProcedure, publicProcedure } from "../trpc";
 
 export const postRouter = {
-  all: publicProcedure.query(async ({ ctx }) => {
+  all: publicProcedure.query(({ ctx }) => {
     // return ctx.db.select().from(schema.post).orderBy(desc(schema.post.id));
-    try {
-      const posts = await ctx.db.query.Post.findMany({
-        orderBy: desc(Post.id),
-        limit: 10,
-      });
-      return posts;
-    } catch (error) {
-      return [];
-    }
+    return ctx.db.query.Post.findMany({
+      orderBy: desc(Post.id),
+      limit: 10,
+    });
   }),
 
   byId: publicProcedure

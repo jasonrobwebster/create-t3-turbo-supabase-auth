@@ -1,5 +1,5 @@
 import type { TRPCRouterRecord } from "@trpc/server";
-import { AuthApiError, AuthError } from "@supabase/auth-js";
+import { AuthApiError } from "@supabase/auth-js";
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 
