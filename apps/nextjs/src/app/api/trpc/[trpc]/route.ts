@@ -1,7 +1,7 @@
 import { fetchRequestHandler } from "@trpc/server/adapters/fetch";
 
 import { appRouter, createTRPCContext } from "@acme/api";
-import { auth } from "@acme/auth";
+import { supabaseAuth } from "@acme/auth";
 
 export const runtime = "edge";
 
@@ -9,29 +9,39 @@ export const runtime = "edge";
  * Configure basic CORS headers
  * You should extend this to match your needs
  */
-const setCorsHeaders = (res: Response) => {
-  res.headers.set("Access-Control-Allow-Origin", "*");
-  res.headers.set("Access-Control-Request-Method", "*");
-  res.headers.set("Access-Control-Allow-Methods", "OPTIONS, GET, POST");
-  res.headers.set("Access-Control-Allow-Headers", "*");
+const setCorsHeaders = (req: Request, res: Response) => {
+  const allowedOrigins = ["http://localhost:3000"];
+
+  const origin = req.headers.get("Origin");
+
+  if (origin && allowedOrigins.includes(origin)) {
+    res.headers.set("Access-Control-Allow-Origin", origin);
+    res.headers.set("Access-Control-Request-Method", "*");
+    res.headers.set("Access-Control-Allow-Methods", "OPTIONS, GET, POST");
+    res.headers.set(
+      "Access-Control-Allow-Headers",
+      "Content-Type, Authorization, X-Requested-With, x-trpc-source, trpc-batch-mode",
+    );
+    res.headers.set("Access-Control-Allow-Credentials", "true");
+  }
 };
 
-export const OPTIONS = () => {
+export const OPTIONS = (req: Request) => {
   const response = new Response(null, {
     status: 204,
   });
-  setCorsHeaders(response);
+  setCorsHeaders(req, response);
   return response;
 };
 
-const handler = auth(async (req) => {
+const handler = supabaseAuth(async (req) => {
   const response = await fetchRequestHandler({
     endpoint: "/api/trpc",
     router: appRouter,
     req,
     createContext: () =>
       createTRPCContext({
-        session: req.auth,
+        user: req.user,
         headers: req.headers,
       }),
     onError({ error, path }) {
@@ -39,7 +49,7 @@ const handler = auth(async (req) => {
     },
   });
 
-  setCorsHeaders(response);
+  setCorsHeaders(req, response);
   return response;
 });
 

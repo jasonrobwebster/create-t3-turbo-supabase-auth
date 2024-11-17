@@ -31,10 +31,10 @@ export const postRouter = {
   create: protectedProcedure
     .input(CreatePostSchema)
     .mutation(({ ctx, input }) => {
-      return ctx.db.insert(Post).values(input);
+      return ctx.db.insert(Post).values(input).returning();
     }),
 
   delete: protectedProcedure.input(z.string()).mutation(({ ctx, input }) => {
-    return ctx.db.delete(Post).where(eq(Post.id, input));
+    return ctx.db.delete(Post).where(eq(Post.id, input)).returning();
   }),
 } satisfies TRPCRouterRecord;
