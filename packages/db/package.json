@@ -46,7 +46,6 @@
     "drizzle-kit": "^0.26.2",
     "eslint": "catalog:",
     "prettier": "catalog:",
-    "tsx": "^4.17.0",
     "typescript": "catalog:"
   },
   "prettier": "@acme/prettier-config"
