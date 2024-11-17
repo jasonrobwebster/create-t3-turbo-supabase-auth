@@ -1,3 +1,5 @@
+"use client";
+
 import { Button } from "@acme/ui/button";
 import { toast } from "@acme/ui/toast";
 
