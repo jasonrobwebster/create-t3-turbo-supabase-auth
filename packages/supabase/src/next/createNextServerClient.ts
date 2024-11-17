@@ -1,6 +1,8 @@
 import { cookies } from "next/headers";
 import { createServerClient } from "@supabase/ssr";
 
+import { env } from "../env";
+
 export function createNextServerClient<Database>({
   asAdmin = false,
 }: {
@@ -8,21 +10,9 @@ export function createNextServerClient<Database>({
 } = {}) {
   const cookieStore = cookies();
 
-  if (!process.env.SUPABASE_URL) {
-    throw new Error("Missing SUPABASE_URL");
-  }
-
-  if (!process.env.SUPABASE_SERVICE_KEY) {
-    throw new Error("Missing SUPABASE_SERVICE_KEY");
-  }
-
-  if (!process.env.SUPABASE_ANON_KEY) {
-    throw new Error("Missing SUPABASE_ANON_KEY");
-  }
-
   return createServerClient<Database>(
-    process.env.SUPABASE_URL,
-    asAdmin ? process.env.SUPABASE_SERVICE_KEY : process.env.SUPABASE_ANON_KEY,
+    env.SUPABASE_URL,
+    asAdmin ? env.SUPABASE_SERVICE_KEY : env.SUPABASE_ANON_KEY,
     {
       cookies: {
         getAll() {
